@@ -50,6 +50,13 @@
             text-align: center;
             border-left: 5px solid #4f46e5;
         }
+        .article-card {
+            transition: all 0.3s ease;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
         /* Modal Styles */
         .modal {
             transition: opacity 0.3s ease;
@@ -73,7 +80,7 @@
 
         <!-- Navigation -->
         <nav class="sticky top-0 bg-white/80 backdrop-blur-md z-10 mb-8 shadow-sm rounded-lg">
-            <div class="flex justify-center border-b border-slate-200">
+            <div class="flex flex-wrap justify-center border-b border-slate-200">
                 <button class="nav-button py-4 px-6 text-slate-600" data-tab="overview">總覽</button>
                 <button class="nav-button py-4 px-6 text-slate-600" data-tab="experience">專業經歷</button>
                 <button class="nav-button py-4 px-6 text-slate-600" data-tab="highlights">專案亮點</button>
@@ -224,7 +231,40 @@
             </section>
         </main>
 
-        <footer class="text-center pt-12 pb-8 mt-8 border-t border-slate-200">
+        <!-- Articles Section (New) -->
+        <section class="mt-12">
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">精選洞察</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Article 1 -->
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7205025752990326784/" target="_blank" rel="noopener noreferrer" class="article-card block bg-white rounded-lg shadow-md overflow-hidden">
+                        <img class="w-full h-40 object-cover" src="https://placehold.co/600x400/e0e7ff/312e81?text=AI+Logo" alt="AI Logo Design">
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg text-slate-900 mb-2">AI 賦能品牌設計</h3>
+                            <p class="text-sm text-slate-600">實測運用 AI 生成品牌 Logo，探討 AI 在創意設計領域的應用潛力、優勢與現階段的挑戰。</p>
+                        </div>
+                    </a>
+                    <!-- Article 2 -->
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7184354551397847040/" target="_blank" rel="noopener noreferrer" class="article-card block bg-white rounded-lg shadow-md overflow-hidden">
+                        <img class="w-full h-40 object-cover" src="https://placehold.co/600x400/e0e7ff/312e81?text=AI+Website" alt="AI Personal Website">
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg text-slate-900 mb-2">AI 協作：我的個人網站建置實錄</h3>
+                            <p class="text-sm text-slate-600">分享如何運用 AI 工具，從零到一打造符合專業形象的互動式個人網站，以及過程中的挑戰與學習。</p>
+                        </div>
+                    </a>
+                    <!-- Article 3 -->
+                    <a href="https://www.linkedin.com/feed/update/urn:li:activity:7183351028535246848/" target="_blank" rel="noopener noreferrer" class="article-card block bg-white rounded-lg shadow-md overflow-hidden">
+                        <img class="w-full h-40 object-cover" src="https://placehold.co/600x400/e0e7ff/312e81?text=AI+PC" alt="AI PC Market Trends">
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg text-slate-900 mb-2">AI PC 時代來臨：市場趨勢與技術解析</h3>
+                            <p class="text-sm text-slate-600">探討 AI PC 的崛起、市場現況與未來趨勢，分析其對軟硬體生態系帶來的變革與機遇。</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center pt-12 pb-8 mt-8">
             <p class="text-slate-500 mb-3"><i class="fas fa-graduation-cap fa-fw mr-2"></i>淡江大學EMBA資管所</p>
             <a href="https://www.linkedin.com/in/robin-hsu-2b59a9a5/" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 transition">
                 <i class="fab fa-linkedin fa-fw mr-2"></i>LinkedIn Profile
@@ -358,7 +398,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

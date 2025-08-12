@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robin Hsu (徐秉暉) - 互動式履歷</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Professional Blue & Gray -->
+    <!-- Application Structure Plan: The application is structured as a single-page, vertical-scrolling portfolio. This linear, top-down flow is ideal for a resume, guiding the user through a narrative of career progression. It starts with a strong "Hero" section for immediate impact, followed by a detailed "Experience" timeline that forms the core of the content. Skills and certifications are grouped into distinct, easily scannable sections. A sticky navigation bar with smooth-scrolling links enhances usability, allowing users to quickly jump to sections of interest. This structure is more engaging and web-native than a static PDF. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Career history. Goal: Show progression. Viz: Vertical Timeline. Interaction: Hover effects on timeline cards. Justification: A timeline is the most intuitive way to visualize career history, clearly showing growth and transitions. Method: HTML + Tailwind CSS.
+        - Report Info: Technical skills & certifications. Goal: Showcase expertise. Viz: Styled tags/badges. Interaction: None. Justification: Badges are a modern, visually appealing way to present a list of skills, making them easy to scan and digest. Method: HTML + Tailwind CSS.
+        - Report Info: Key achievements (e.g., "一鍵寄送"). Goal: Highlight impact. Viz: Emphasized list items within the timeline. Interaction: None. Justification: Embedding achievements directly within the relevant job experience provides crucial context and demonstrates the direct impact of the work. Method: HTML + Tailwind CSS.
+        - Report Info: Contact details. Goal: Facilitate connection. Viz: Header and footer sections. Interaction: Clickable links. Justification: Placing contact info in standard, easily accessible locations (top and bottom) follows user expectations. Method: HTML.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #334155; /* slate-700 */
+        }
+        .hero-bg {
+            background-color: #0f172a; /* slate-900 */
+            color: #f1f5f9; /* slate-100 */
+        }
+        .timeline-item {
+            border-left: 3px solid #3b82f6; /* blue-500 */
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -10px;
+            top: 1.25rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 9999px;
+            background-color: #3b82f6; /* blue-500 */
+            border: 3px solid #f1f5f9; /* slate-100 */
+        }
+        .skill-tag {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0c4a6e; /* sky-800 */
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .section-title {
+            border-bottom: 3px solid #3b82f6; /* blue-500 */
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="sticky top-0 bg-white/90 backdrop-blur-md z-50 shadow-md">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-800">Robin Hsu | 徐秉暉</h1>
+            <nav class="hidden md:flex space-x-6 text-slate-600 font-semibold">
+                <a href="#experience" class="hover:text-blue-600 transition">專業經歷</a>
+                <a href="#skills" class="hover:text-blue-600 transition">技術棧</a>
+                <a href="#certs" class="hover:text-blue-600 transition">專業認證</a>
+                <a href="#contact" class="hover:text-blue-600 transition">聯絡方式</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-bg text-center py-20 px-6">
+            <div class="container mx-auto">
+                <div class="w-32 h-32 mx-auto rounded-full mb-6 border-4 border-slate-400">
+                    <img src="https://placehold.co/128x128/e2e8f0/334155?text=RH" alt="Robin Hsu 大頭照" class="rounded-full w-full h-full object-cover">
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-white">徐秉暉 (Robin Hsu)</h2>
+                <p class="text-xl md:text-2xl text-slate-300 mt-2">資深技術領袖 | 敏捷開發專家</p>
+                <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 text-slate-200">
+                    <div class="bg-slate-800/50 p-3 rounded-lg">20+ 年資訊軟體經驗</div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg">全端系統架構整合</div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg">雲端解決方案與數位轉型</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-16 px-6">
+            <div class="container mx-auto">
+                <h2 class="section-title text-3xl font-bold text-slate-800 mb-12">專業經歷</h2>
+                <div class="relative">
+                    <!-- 91APP -->
+                    <div class="timeline-item pl-10 pb-12 relative">
+                        <div class="timeline-dot"></div>
+                        <p class="text-sm text-slate-500">2022 - Present</p>
+                        <h3 class="text-2xl font-bold text-blue-700">產品發展處 總監</h3>
+                        <p class="text-lg font-semibold text-slate-700">91APP (九一應用軟體)</p>
+                        <div class="mt-4 space-y-3 text-slate-600">
+                            <p><strong>主要職責：</strong>團隊重建、內部系統、數位轉型、軟體解決方案窗口。管理超過20人的IT團隊。</p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-slate-800">關鍵成就：</h4>
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li><strong>ERP導入 (Oracle NetSuite):</strong> 成功推動延宕兩年的導入案，順利切換核心財務系統，提升流程效率超過200%。</li>
+                                    <li><strong>AI 導入提升營運效率:</strong>
+                                        <ul class="list-['-_'] list-inside ml-4">
+                                            <li><span class="font-semibold">一鍵上架 (RPA):</span> 透過 Microsoft PowerAutomate 將3,000+上架步驟自動化，成本下降超過80%。</li>
+                                            <li><span class="font-semibold">智能客服 (ChatBot):</span> 整合 Google NotebookLM 與 ZOHO/Zendesk，提升客服人員效率超過50%。</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>庫存管理系統優化:</strong> 升級串接平台，提高庫存效率，降低賣超風險，服務 adidas、VF威富集團、無印良品等客戶。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- EZTABLE -->
+                    <div class="timeline-item pl-10 pb-12 relative">
+                        <div class="timeline-dot"></div>
+                        <p class="text-sm text-slate-500">2020 - 2022</p>
+                        <h3 class="text-2xl font-bold text-blue-700">技術暨人才副總</h3>
+                        <p class="text-lg font-semibold text-slate-700">EZTABLE (香港商簡單桌)</p>
+                        <div class="mt-4 space-y-3 text-slate-600">
+                            <p><strong>主要職責：</strong>集團營運、團隊與系統重建 (官網/APP/後台)。管理IT與營運部門。</p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-slate-800">關鍵成就：</h4>
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li><strong>解決技術債:</strong> 導入前/後端分離框架，優化AWS雲端方案，使系統重獲開發新功能的能力。</li>
+                                    <li><strong>成本與效率優化:</strong> 導入SRE維運模式節省100%，IT費用節省40%，同時維持GMV成長。</li>
+                                    <li><strong>高併發處理:</strong> 解決知名餐廳因搶位導致系統癱瘓問題 (700萬 Requests/分鐘)。</li>
+                                    <li><strong>敏捷轉型:</strong> 將SCRUM敏捷管理導入全公司，建立PMO，圖像化商業邏輯，提升企業效率與品質。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TutorABC -->
+                    <div class="timeline-item pl-10 pb-12 relative">
+                        <div class="timeline-dot"></div>
+                        <p class="text-sm text-slate-500">2014 - 2020</p>
+                        <h3 class="text-2xl font-bold text-blue-700">資深研發經理</h3>
+                        <p class="text-lg font-semibold text-slate-700">TutorABC (麥奇數位/阿里巴巴/平安集團)</p>
+                        <div class="mt-4 space-y-3 text-slate-600">
+                            <p><strong>主要職責：</strong>建立團隊，負責公司高速成長所需系統。管理超過80人的多個研發部門。</p>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-slate-800">關鍵成就：</h4>
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li><strong class="text-red-600">「一鍵寄送」:</strong> 整合快遞與倉儲，將成交後作業全數電子化，<span class="font-extrabold">年省行政成本近1億元</span>。</li>
+                                    <li><strong>Social CRM 整合:</strong> CTI系統整合LINE OA，年省電話支出200萬，並將客戶生命週期模組化。</li>
+                                    <li><strong>獲客渠道整合:</strong> 收攏多方來源名單，動態調整權重，提升業務成交機率。</li>
+                                    <li><strong>數位轉型「一鍵」系列:</strong> 導入「一鍵註冊」、「一鍵成交」（首家導入電子合約的線上教育業者），顯著提升預約率與轉化率。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- WistronITS -->
+                    <div class="timeline-item pl-10 pb-12 relative">
+                        <div class="timeline-dot"></div>
+                        <p class="text-sm text-slate-500">2013 - 2014</p>
+                        <h3 class="text-2xl font-bold text-blue-700">專案經理</h3>
+                        <p class="text-lg font-semibold text-slate-700">WistronITS (緯創軟體)</p>
+                        <div class="mt-4 space-y-3 text-slate-600">
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li>擔任專案窗口，負責技術方案評估與跨系統整合。</li>
+                                    <li>主要專案包含「台北市教育局酷課雲」與「富邦金控壽險核保電子化」。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- RSL -->
+                    <div class="timeline-item pl-10 pb-12 relative">
+                        <div class="timeline-dot"></div>
+                        <p class="text-sm text-slate-500">2006 - 2013</p>
+                        <h3 class="text-2xl font-bold text-blue-700">專案經理, 系統分析師, 研發工程師</h3>
+                        <p class="text-lg font-semibold text-slate-700">RSL (騰雲科技)</p>
+                        <div class="mt-4 space-y-3 text-slate-600">
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li>負責百貨/購物中心/連鎖零售的POS+ERP系統建置與整合。</li>
+                                    <li>帶領團隊將程式語法由ASP升級至ASP.NET，並導入系統分析(SA)，提高效率。</li>
+                                    <li>自主研發「業績試算/反結算」功能，提升帳務準確度與結帳效率超過50%。</li>
+                                    <li>帶領團隊考取原廠證照，使公司成為Microsoft/Oracle金級認證夥伴，提升獲利35%。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-16 px-6 bg-white">
+            <div class="container mx-auto">
+                <h2 class="section-title text-3xl font-bold text-slate-800 mb-12">技術棧與專長</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">後端 & 資料庫</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag">C#.NET</span><span class="skill-tag">Node.js</span><span class="skill-tag">ASP.NET</span><span class="skill-tag">MS-SQL</span><span class="skill-tag">MySQL</span><span class="skill-tag">Oracle DB</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">前端 & App</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag">React.js</span><span class="skill-tag">React Native</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">雲端 & 維運</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag">AWS</span><span class="skill-tag">GCP</span><span class="skill-tag">Oracle Cloud</span><span class="skill-tag">阿里雲</span><span class="skill-tag">平安雲</span><span class="skill-tag">SRE</span><span class="skill-tag">Github</span><span class="skill-tag">SVN</span>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <h3 class="text-xl font-bold mb-4">管理 & 整合</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag">敏捷開發 (SCRUM)</span><span class="skill-tag">團隊建置與管理</span><span class="skill-tag">技術藍圖規劃</span><span class="skill-tag">數位轉型</span><span class="skill-tag">系統整合 (ERP, POS, CRM)</span><span class="skill-tag">RPA</span><span class="skill-tag">ChatBot</span><span class="skill-tag">PMO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certs" class="py-16 px-6">
+            <div class="container mx-auto">
+                <h2 class="section-title text-3xl font-bold text-slate-800 mb-12">專業認證</h2>
+                <div class="flex flex-wrap gap-3 justify-center">
+                    <span class="skill-tag bg-blue-100 text-blue-800">PMP 國際專案管理師</span>
+                    <span class="skill-tag bg-blue-100 text-blue-800">CSM 敏捷管理專家證照</span>
+                    <span class="skill-tag bg-blue-100 text-blue-800">ITILv3 資訊技術服務</span>
+                    <span class="skill-tag bg-blue-100 text-blue-800">ITSMS 資訊服務管理</span>
+                    <span class="skill-tag bg-blue-100 text-blue-800">MCPD 微軟程式開發專家</span>
+                    <span class="skill-tag bg-blue-100 text-blue-800">OCA Oracle 資料庫專家</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="bg-slate-800 text-white py-12 px-6">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold">聯絡方式</h2>
+            <p class="mt-4 text-slate-300">期待能有機會與您進一步交流。</p>
+            <div class="mt-6 text-lg space-y-2">
+                <p>📞 <a href="tel:0919-309-709" class="hover:text-blue-400 transition">0919-309-709</a></p>
+                <p>🎓 淡江大學EMBA資管所</p>
+                <p>🔗 <a href="#" class="hover:text-blue-400 transition">LinkedIn Profile</a></p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

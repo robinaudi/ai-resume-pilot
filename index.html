@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robin Hsu - Interactive Dashboard Resume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chosen Palette: AI Revolution Dashboard Style -->
+    <!-- Application Structure Plan: A single-page application structured as an interactive dashboard, mirroring the user's preferred "AI Revolution Dashboard" style. It uses a top-level tab navigation (Overview, Experience, Highlights) to allow non-linear exploration. The "Overview" acts as a landing dashboard with KPI cards for immediate impact. The "Experience" section uses modals for detailed descriptions, keeping the main interface clean. The "Highlights" section showcases key projects in a visually engaging card format. This structure moves away from a traditional resume format towards a dynamic, professional presentation. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Key career stats (20+ years, cost savings). Goal: Provide a quick, high-impact summary. Viz: KPI Cards, styled identically to the reference dashboard. Interaction: None. Justification: KPI cards are excellent for showcasing quantifiable achievements at a glance.
+        - Report Info: Detailed job duties from PDF. Goal: Offer deep-dive information without clutter. Viz: Modal windows for each job role. Interaction: Click to open. Justification: This layered information approach keeps the main timeline clean and scannable, while providing comprehensive details on demand.
+        - Report Info: Major projects (ERP, "One-Click"). Goal: Showcase specific, impactful projects. Viz: Dedicated "Highlights" section with distinct cards. Interaction: None. Justification: Separating key projects from the chronological timeline gives them more prominence and tells a story of achievement.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+        .nav-button.active {
+            border-bottom-color: #4f46e5; /* indigo-600 */
+            color: #312e81; /* indigo-900 */
+            font-weight: 700;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            text-align: center;
+            border-left: 5px solid #4f46e5;
+        }
+        /* Modal Styles */
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <div class="inline-block">
+                <img src="https://raw.githubusercontent.com/robinaudi/ai-resume-pilot/main/Robin_pic_linkedin.jpeg" alt="Robin Hsu" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/128x128/e2e8f0/334155?text=RH';">
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900">Robin Hsu</h1>
+            <p class="mt-2 text-lg text-slate-600">資深技術領袖 | 企業數位轉型專家</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="sticky top-0 bg-white/80 backdrop-blur-md z-10 mb-8 shadow-sm rounded-lg">
+            <div class="flex justify-center border-b border-slate-200">
+                <button class="nav-button py-4 px-6 text-slate-600" data-tab="overview">總覽</button>
+                <button class="nav-button py-4 px-6 text-slate-600" data-tab="experience">專業經歷</button>
+                <button class="nav-button py-4 px-6 text-slate-600" data-tab="highlights">專案亮點</button>
+                <button class="nav-button py-4 px-6 text-slate-600" data-tab="expertise">核心專長</button>
+            </div>
+        </nav>
+
+        <main>
+            <!-- Overview Section -->
+            <section id="overview" class="content-section">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-4">專業總覽</h2>
+                    <p class="text-slate-600 mb-8 leading-relaxed">超過二十年軟體產業經驗，專精於建構高效敏捷團隊、執行技術藍圖與全端系統整合。憑藉甲、乙方各十年的實戰資歷，成功驅動企業數位轉型，實現顯著的成本效益與效率提升。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="kpi-card">
+                            <h3 class="text-4xl font-bold text-indigo-600 mb-2">20+</h3>
+                            <p class="text-slate-700 font-semibold">年資訊軟體經驗</p>
+                            <p class="text-sm text-slate-500 mt-1">涵蓋甲/乙方完整歷練</p>
+                        </div>
+                        <div class="kpi-card">
+                            <h3 class="text-4xl font-bold text-indigo-600 mb-2">1億+</h3>
+                            <p class="text-slate-700 font-semibold">年省行政成本</p>
+                            <p class="text-sm text-slate-500 mt-1">於 TutorABC 主導數位化專案</p>
+                        </div>
+                        <div class="kpi-card">
+                            <h3 class="text-4xl font-bold text-indigo-600 mb-2">200%</h3>
+                            <p class="text-slate-700 font-semibold">流程效率提升</p>
+                            <p class="text-sm text-slate-500 mt-1">於 91APP 導入 ERP 系統</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience Section -->
+            <section id="experience" class="content-section">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- 91APP -->
+                    <div class="bg-white p-6 rounded-xl shadow-md flex flex-col">
+                        <p class="text-sm text-slate-500">2022 - Present</p>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">產品發展處 總監</h3>
+                        <p class="text-md font-semibold text-indigo-600">91APP (九一應用軟體)</p>
+                        <ul class="list-disc list-outside ml-5 mt-4 space-y-2 text-sm leading-relaxed text-slate-600 flex-grow">
+                            <li>主導 Oracle NetSuite ERP 導入，提升流程效率。</li>
+                            <li>導入 AI 與 RPA，降低營運成本、提升客服效率。</li>
+                            <li>優化 B2B 庫存管理系統，服務 adidas 等關鍵客戶。</li>
+                        </ul>
+                        <button class="js-modal-trigger mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 self-end" data-modal-id="modal-91app">查看詳情 <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                    <!-- EZTABLE -->
+                    <div class="bg-white p-6 rounded-xl shadow-md flex flex-col">
+                        <p class="text-sm text-slate-500">2020 - 2022</p>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">技術暨人才副總</h3>
+                        <p class="text-md font-semibold text-indigo-600">EZTABLE (香港商簡單桌)</p>
+                        <ul class="list-disc list-outside ml-5 mt-4 space-y-2 text-sm leading-relaxed text-slate-600 flex-grow">
+                            <li>重建技術團隊，導入 SRE，大幅降低 IT 成本。</li>
+                            <li>設計高併發解決方案，穩定應對每分鐘 700 萬次請求。</li>
+                            <li>將 SCRUM 推廣至全公司，建立 PMO，提升整體營運效率。</li>
+                        </ul>
+                        <button class="js-modal-trigger mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 self-end" data-modal-id="modal-eztable">查看詳情 <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                    <!-- TutorABC -->
+                    <div class="bg-white p-6 rounded-xl shadow-md flex flex-col">
+                        <p class="text-sm text-slate-500">2014 - 2020</p>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">資深研發經理</h3>
+                        <p class="text-md font-semibold text-indigo-600">TutorABC (麥奇數位)</p>
+                        <ul class="list-disc list-outside ml-5 mt-4 space-y-2 text-sm leading-relaxed text-slate-600 flex-grow">
+                            <li>主導「一鍵寄送」數位化專案，年省行政成本逾一億元。</li>
+                            <li>打造 Social CRM 系統，整合 CTI 與 LINE，提升銷售效益。</li>
+                            <li>推動導入電子合約，使成交轉換率提升超過 30%。</li>
+                        </ul>
+                        <button class="js-modal-trigger mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 self-end" data-modal-id="modal-tutorabc">查看詳情 <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                    <!-- RSL / Wistron -->
+                    <div class="bg-white p-6 rounded-xl shadow-md flex flex-col">
+                        <p class="text-sm text-slate-500">2006 - 2014</p>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">專案經理 / 系統分析師</h3>
+                        <p class="text-md font-semibold text-indigo-600">緯創軟體 / 騰雲科技</p>
+                        <ul class="list-disc list-outside ml-5 mt-4 space-y-2 text-sm leading-relaxed text-slate-600 flex-grow">
+                            <li>負責大型零售業 POS+ERP 系統建置與技術升級。</li>
+                            <li>自主研發核心功能，提升結帳效率與帳務準確度。</li>
+                            <li>帶領團隊考取原廠認證，提升公司專案獲利。</li>
+                        </ul>
+                        <button class="js-modal-trigger mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-800 self-end" data-modal-id="modal-rsl">查看詳情 <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Highlights Section -->
+            <section id="highlights" class="content-section">
+                <div class="space-y-8">
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-1">ERP 導入與數位轉型</h3>
+                        <p class="text-sm text-indigo-600 font-semibold mb-4">91APP | 企業營運系統</p>
+                        <p class="text-slate-600 leading-relaxed">成功推動延宕兩年的 Oracle NetSuite ERP 導入案，透過「先標準化才系統化」的理念，繪製企業藍圖並與用戶深度溝通，最終不僅順利切換核心財務系統，更實現費用申報與立帳流程自動化，使整體效率提升超過 200%。</p>
+                    </div>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-1">AI 賦能與成本優化</h3>
+                        <p class="text-sm text-indigo-600 font-semibold mb-4">TutorABC / 91APP | 營運效率</p>
+                        <p class="text-slate-600 leading-relaxed">跨公司實踐 AI 技術落地。在 TutorABC，主導「一鍵寄送」專案，整合金流與倉儲，年省行政成本破億。在 91APP，導入 RPA 將三千多個手動上架步驟自動化，使成本下降 80%；並整合多平台建構智能客服，提升客服效率超過 50%。</p>
+                    </div>
+                    <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-1">技術團隊重建與敏捷轉型</h3>
+                        <p class="text-sm text-indigo-600 font-semibold mb-4">EZTABLE | 新創文化</p>
+                        <p class="text-slate-600 leading-relaxed">接手後重建技術與營運團隊，導入前後端分離、SRE 等現代化工程實踐，解決長期技術債。將 SCRUM 敏捷管理推廣至全公司，創建 PMO 並設置單一窗口，圖像化商業邏輯，在維持 GMV 成長的同時，達成 IT 維運成本降低 100%、費用節省 40% 的目標。</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expertise Section -->
+            <section id="expertise" class="content-section">
+                 <div class="bg-white p-6 md:p-8 rounded-xl shadow-md">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold mb-4 text-slate-800">管理與策略</h3>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">專案管理 (PMP)</span>
+                                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">敏捷開發 (SCRUM)</span>
+                                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">技術團隊建置</span>
+                                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">企業數位轉型</span>
+                                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">技術藍圖規劃</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-4 text-slate-800">技術與整合</h3>
+                             <div class="flex flex-wrap gap-3">
+                                <span class="bg-slate-100 text-slate-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">AI 系統整合</span>
+                                <span class="bg-slate-100 text-slate-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">雲端解決方案</span>
+                                <span class="bg-slate-100 text-slate-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">C#.NET</span>
+                                <span class="bg-slate-100 text-slate-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">AWS / GCP</span>
+                                <span class="bg-slate-100 text-slate-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">RPA</span>
+                                <span class="bg-slate-100 text-slate-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">SRE</span>
+                                <span class="bg-slate-100 text-slate-800 text-sm font-medium me-2 px-4 py-1.5 rounded-full">React / Node.js</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12">
+                        <h3 class="text-xl font-bold mb-4 text-center text-slate-800">專業認證</h3>
+                        <div class="max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-6 text-center text-sm text-slate-600">
+                           <p>PMP 國際專案管理師</p>
+                           <p>CSM 敏捷管理專家證照</p>
+                           <p>ITILv3 資訊技術服務</p>
+                           <p>ITSMS 資訊服務管理</p>
+                           <p>MCPD 微軟程式開發專家</p>
+                           <p>OCA Oracle 資料庫專家</p>
+                       </div>
+                    </div>
+                 </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-91app" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 opacity-0 pointer-events-none">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 transform scale-95">
+            <div class="flex justify-between items-center border-b pb-3 mb-5">
+                <h3 class="text-xl font-bold text-slate-800">91APP 專案詳情</h3>
+                <button class="js-modal-close text-2xl text-slate-500 hover:text-slate-800">&times;</button>
+            </div>
+            <div class="space-y-6 text-sm">
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[ERP導入] Oracle NetSuite</h4>
+                    <p class="mb-2">成功推動延宕兩年的ERP導入案，順利導入財務系統，並無縫完成平行移轉。</p>
+                    <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li>建立尋/比/議價流程，負責系統與模組評估。</li>
+                        <li>主導橫向技術串接與整合，確保集團全公司如期順利上線。</li>
+                        <li>繪製企業藍圖，與用戶確認需求後才進行系統化，實現費用申報串接立帳自動化，流程效率提升超過200%。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[導入AI提升企業營運效率]</h4>
+                     <ul class="list-disc list-outside ml-5 space-y-2 text-slate-600">
+                        <li><strong class="text-slate-800">一鍵上架 (RPA):</strong> 透過訪談拆解出超過3,000個上架步驟，規劃成階段性巨集，由 Microsoft PowerAutomate 自動執行，專案成本下降超過80%。</li>
+                        <li><strong class="text-slate-800">智能客服 (ChatBot):</strong> 結合 Google NotebookLM, ZOHO, Zendesk，並運用 AI 分析歷史案件，串接電商後台與客服系統，使客服人員效率提升超過50%。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[產品優化: 庫存管理系統]</h4>
+                     <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li>升級B2B串接平台，降低系統同步時間差，提高庫存效率，為 adidas, VF威富集團, 無印良品等客戶降低庫存成本與賣超風險。</li>
+                        <li>優化多平台 (momo, 蝦皮, PCHome) 共庫分配邏輯，並能彈性調整活動保留量。</li>
+                        <li>協助客服人員規劃回覆矩陣，結合ChatBot自動回覆，節省57%案件處理時間。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-eztable" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 opacity-0 pointer-events-none">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 transform scale-95">
+            <div class="flex justify-between items-center border-b pb-3 mb-5">
+                <h3 class="text-xl font-bold text-slate-800">EZTABLE 專案詳情</h3>
+                <button class="js-modal-close text-2xl text-slate-500 hover:text-slate-800">&times;</button>
+            </div>
+            <div class="space-y-6 text-sm">
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[產品優化: 線上訂位 (官網+APP)]</h4>
+                    <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li>導入前/後端分離開發框架，優化雲端解決方案(AWS)，解決技術債，讓系統終於能開發新功能。</li>
+                        <li>導入SRE (Site reliability engineering)，維運節省100%，IT費用節省40% (在GMV維持成長的前提下)。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[產品優化: 餐廳上架後臺]</h4>
+                     <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li>解決知名餐廳因客戶搶位導致系統癱瘓問題 (700萬 Requests/分鐘) with AWS Solution。</li>
+                        <li>導入RBAC (Role-based access control)，擴充餐廳品項上架自主性，提升雙方營運效率。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[策略與管理]</h4>
+                     <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li>導入SCRUM敏捷管理至全公司、創建PMO、設置單一窗口，降低跨部門溝通GAP。</li>
+                        <li>推動 Customer Journey Map Everywhere，圖像化商業邏輯與日常作業，將大量線下作業數位化。</li>
+                        <li>讓資源/進度透明，安排PM駐點進行訪談與改造作業流程，提升企業效率與品質。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-tutorabc" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 opacity-0 pointer-events-none">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 transform scale-95">
+            <div class="flex justify-between items-center border-b pb-3 mb-5">
+                <h3 class="text-xl font-bold text-slate-800">TutorABC 專案詳情</h3>
+                <button class="js-modal-close text-2xl text-slate-500 hover:text-slate-800">&times;</button>
+            </div>
+            <div class="space-y-6 text-sm">
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[管理創新] 專業分工</h4>
+                    <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li><strong>專案開發 Team:</strong> 專注於開發新產品，遵循策略增加營收 (產品改版、策略合作)。</li>
+                        <li><strong>營運優化 Team:</strong> 致力提升內部系統穩定度與效率，大幅降低成本。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[產品: Social CRM]</h4>
+                     <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li>電銷大軍CTI系統整合LINE OA，電話支出節省200萬/年，達成低成本且更有效的溝通。</li>
+                        <li>LINE對話整合CRM，完整紀錄過程並有效分析，將客戶(名單)生命週期模組化。</li>
+                        <li>打造話術/破冰系統整合至CTI，並串接官方貼圖，實現更個性化的客戶溝通。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[產品: 數位轉型]</h4>
+                     <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li><strong>一鍵註冊:</strong> 提升全通路使用者體驗，整合社群帳號，簡化成交程序，預約率提升10%以上。</li>
+                        <li><strong>一鍵成交:</strong> 向政府提案成功，成為首家導入電子化合約線上教育業者，轉化率提升30%以上。</li>
+                        <li><strong>一鍵寄送:</strong> 整合快遞與倉儲，將成交後的寄送作業全數電子文件化，行政成本下降$1億/年。</li>
+                        <li><strong>一鍵叫修:</strong> 成立#1999專線，統一派發任務、分析根因、優化系統，使效率提升20%以上。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modal-rsl" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 opacity-0 pointer-events-none">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 transform scale-95">
+            <div class="flex justify-between items-center border-b pb-3 mb-5">
+                <h3 class="text-xl font-bold text-slate-800">緯創軟體 / 騰雲科技 專案詳情</h3>
+                <button class="js-modal-close text-2xl text-slate-500 hover:text-slate-800">&times;</button>
+            </div>
+            <div class="space-y-6 text-sm">
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[系統建置與導入] 零售 Ecosystem</h4>
+                    <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li>負責百貨/購物中心/連鎖零售的 POS+ERP 系統建置、營業管理、行銷管理、財會行政管理。</li>
+                        <li>系統串接：悠遊卡票證、信用卡收單系統、第三方支付、關貿/銀行EDI平台、電子發票串接。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-md text-indigo-700 mb-2">[關鍵成就]</h4>
+                     <ul class="list-disc list-outside ml-5 space-y-1 text-slate-600">
+                        <li><strong>開發升級:</strong> 程式語法由ASP轉ASP.NET，並導入系統分析(SA)，降低無效重工、提高除錯效率。</li>
+                        <li><strong>產品升級:</strong> 自主研發「業績試算/反結算」，提升帳務準確度與結帳效率增加50%以上。</li>
+                        <li><strong>獲利提升35%:</strong> 帶領團隊考取原廠技術證照，公司成為Microsoft/Oracle Gold Certified Partner。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const contentSections = document.querySelectorAll('.content-section');
+            const modalTriggers = document.querySelectorAll('.js-modal-trigger');
+            const modalCloses = document.querySelectorAll('.js-modal-close');
+
+            function switchTab(tabId) {
+                navButtons.forEach(button => {
+                    button.classList.toggle('active', button.dataset.tab === tabId);
+                });
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === tabId);
+                });
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    switchTab(button.dataset.tab);
+                });
+            });
+
+            // Initialize with the first tab active
+            switchTab('overview');
+
+            // Modal logic
+            function openModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    document.body.style.overflow = 'hidden';
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    modal.querySelector('.modal-content').classList.remove('scale-95');
+                }
+            }
+
+            function closeModal() {
+                const activeModal = document.querySelector('.modal:not(.opacity-0)');
+                if (activeModal) {
+                    document.body.style.overflow = '';
+                    activeModal.classList.add('opacity-0');
+                    activeModal.querySelector('.modal-content').classList.add('scale-95');
+                    setTimeout(() => {
+                        activeModal.classList.add('pointer-events-none');
+                    }, 300);
+                }
+            }
+
+            modalTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function () {
+                    openModal(this.dataset.modalId);
+                });
+            });
+
+            modalCloses.forEach(closeBtn => {
+                closeBtn.addEventListener('click', closeModal);
+            });
+            
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(event) {
+                    if (event.target === this) {
+                        closeModal();
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

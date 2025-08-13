@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robin Hsu - 電影級沉浸式履歷</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Swiper.js for Carousel -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- Chosen Palette: EVCRP Inspired with Light/Dark Mode -->
+    <!-- Application Structure Plan: A single-page, vertical-scrolling portfolio inspired by evcrp.com. The structure is a top-down narrative journey. It starts with a full-screen video hero section for a cinematic first impression. As the user scrolls, key career stages and skills sections fade and slide into view sequentially. The design uses a dark theme, large typography, and significant whitespace to create a high-end, minimalist feel. A fixed, transparent header provides persistent navigation and contact access. This transforms the resume from a static document into a dynamic, visually engaging story. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Career highlights. Goal: Create a cinematic, storytelling experience. Viz: Full-width sections with large, minimalist typography and subtle scroll-triggered animations. Interaction: Vertical scrolling reveals content. Justification: This mimics the reference site's high-end, narrative feel, focusing on the story and impact of each role.
+        - Report Info: Detailed information (skills, contact). Goal: Provide comprehensive info without cluttering the visual design. Viz: A clean, grid-based layout for skills and a minimalist footer. Interaction: Standard links. Justification: This keeps the primary interface extremely clean, aligning with the minimalist aesthetic, while ensuring all necessary information is accessible.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        #video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+        .hero-section {
+            height: 100vh;
+        }
+        .content-section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .fixed-header {
+            transition: background-color 0.3s ease;
+        }
+        .experience-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .experience-card:hover {
+            transform: translateY(-5px);
+        }
+        .article-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Dark Theme (Default) */
+        body.dark {
+            background-color: #111827; /* gray-900 */
+            color: #d1d5db; /* gray-300 */
+        }
+        body.dark #video-background { opacity: 0.15; }
+        body.dark .hero-section { color: white; }
+        body.dark .section-title { color: #818cf8; /* indigo-400 */ }
+        body.dark .experience-card { background-color: rgba(31, 41, 55, 0.5); }
+        body.dark .experience-card:hover { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); }
+        body.dark .article-card { background-color: #1f2937; border: 1px solid #374151; }
+        body.dark .article-card:hover { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); border-color: #4b5563; }
+        body.dark .text-main { color: #f9fafb; /* gray-50 */ }
+        body.dark .text-subtle { color: #9ca3af; /* gray-400 */ }
+        body.dark .text-accent { color: #a5b4fc; /* indigo-300 */ }
+        body.dark .icon-color { color: #818cf8; /* indigo-400 */ }
+        body.dark .article-metrics { border-top: 1px solid #374151; }
+
+        /* Light Theme */
+        body.light {
+            background-color: #f9fafb; /* gray-50 */
+            color: #374151; /* gray-700 */
+        }
+        body.light #video-background { opacity: 0.05; }
+        body.light .hero-section { color: #1f2937; /* gray-800 */ }
+        body.light .section-title { color: #4f46e5; /* indigo-600 */ }
+        body.light .experience-card { background-color: #ffffff; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+        body.light .experience-card:hover { box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+        body.light .article-card { background-color: #ffffff; border: 1px solid #e5e7eb; }
+        body.light .article-card:hover { box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); border-color: #d1d5db; }
+        body.light .text-main { color: #111827; /* gray-900 */ }
+        body.light .text-subtle { color: #6b7280; /* gray-500 */ }
+        body.light .text-accent { color: #4f46e5; /* indigo-600 */ }
+        body.light .icon-color { color: #4f46e5; /* indigo-600 */ }
+        body.light .article-metrics { border-top: 1px solid #e5e7eb; }
+
+
+        /* Theme Toggle Switch */
+        .theme-switch-wrapper { display: flex; align-items: center; }
+        .theme-switch { display: inline-block; height: 26px; position: relative; width: 50px; }
+        .theme-switch input { display:none; }
+        .slider { background-color: #4b5563; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; }
+        .slider:before { background-color: #fff; bottom: 3px; content: ""; height: 20px; left: 3px; position: absolute; transition: .4s; width: 20px; }
+        input:checked + .slider { background-color: #6366f1; }
+        input:checked + .slider:before { transform: translateX(24px); }
+        .slider.round { border-radius: 34px; }
+        .slider.round:before { border-radius: 50%; }
+
+        /* Marquee Styles */
+        .marquee {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .marquee-inner {
+            display: flex;
+            width: fit-content;
+            animation: marquee 60s linear infinite;
+        }
+        .marquee:hover .marquee-inner {
+            animation-play-state: paused;
+        }
+        .marquee-item {
+            margin: 0 0.5rem; /* Reduced space between cards */
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Fixed Header -->
+    <header id="fixed-header" class="fixed-header fixed top-0 left-0 right-0 z-50 p-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-xl font-bold tracking-widest text-main">ROBIN HSU</div>
+            <div class="flex items-center space-x-4 md:space-x-6 text-sm">
+                <div class="theme-switch-wrapper">
+                    <i class="fas fa-sun mr-2 text-yellow-400"></i>
+                    <label class="theme-switch" for="theme-checkbox">
+                        <input type="checkbox" id="theme-checkbox" />
+                        <div class="slider round"></div>
+                    </label>
+                    <i class="fas fa-moon ml-2 text-blue-300"></i>
+                </div>
+                <a href="https://www.linkedin.com/in/robin-hsu-2b59a9a5/" target="_blank" rel="noopener noreferrer" class="text-subtle hover:text-main transition">
+                    <i class="fab fa-linkedin fa-lg"></i>
+                </a>
+                <a href="mailto:robin.lexus@gmail.com" class="text-subtle hover:text-main transition">
+                    <i class="fas fa-envelope fa-lg"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section relative flex items-center justify-center text-center overflow-hidden">
+        <video autoplay muted loop playsinline id="video-background">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-futuristic-long-grid-tunnel-42483-large.mp4" type="video/mp4">
+        </video>
+        <div class="z-10">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-main">Robin Hsu</h1>
+            <p class="text-lg md:text-xl mt-4 text-subtle">驅動數位轉型的產品技術領袖</p>
+        </div>
+    </section>
+
+    <!-- Main Content Wrapper -->
+    <div class="container mx-auto px-6 py-24 md:py-32 space-y-24 md:space-y-32">
+        
+        <!-- About Section -->
+        <section class="content-section max-w-4xl mx-auto text-center">
+            <h2 class="section-title mb-4">關於我</h2>
+            <p class="text-2xl md:text-3xl leading-relaxed text-main">
+                超過二十年軟體產業經驗，專精於建構高效敏捷團隊、執行技術藍圖與全端系統整合。憑藉甲、乙方各十年的實戰資歷，成功驅動企業數位轉型，實現顯著的成本效益與效率提升。
+            </p>
+        </section>
+
+        <!-- Experience Section -->
+        <section class="content-section">
+            <h2 class="section-title mb-12 text-center">專業旅程</h2>
+            <div class="space-y-16">
+                <!-- 91APP -->
+                <div class="experience-card grid grid-cols-1 md:grid-cols-5 gap-8 items-center p-8 rounded-lg">
+                    <div class="md:col-span-2">
+                        <p class="text-accent font-semibold">2022 - Present</p>
+                        <h3 class="text-3xl font-bold text-main mt-2">91APP</h3>
+                        <p class="text-lg text-subtle">產品發展處 總監</p>
+                    </div>
+                    <div class="md:col-span-3 leading-relaxed">
+                        主導關鍵數位轉型，成功導入 Oracle NetSuite ERP，使流程效率提升超過 200%；並透過 AI 與 RPA 技術，將營運成本降低 80%，實現真正的智慧營運。
+                    </div>
+                </div>
+                <!-- EZTABLE -->
+                <div class="experience-card grid grid-cols-1 md:grid-cols-5 gap-8 items-center p-8 rounded-lg">
+                    <div class="md:col-span-2">
+                        <p class="text-accent font-semibold">2020 - 2022</p>
+                        <h3 class="text-3xl font-bold text-main mt-2">EZTABLE</h3>
+                        <p class="text-lg text-subtle">技術暨人才副總</p>
+                    </div>
+                    <div class="md:col-span-3 leading-relaxed">
+                        重建技術與營運團隊，並將 SCRUM 敏捷文化深植於公司 DNA。透過導入 SRE 等現代化實踐，在維持 GMV 成長的同時，將 IT 維運成本降低了 100%。
+                    </div>
+                </div>
+                <!-- TutorABC -->
+                <div class="experience-card grid grid-cols-1 md:grid-cols-5 gap-8 items-center p-8 rounded-lg">
+                    <div class="md:col-span-2">
+                        <p class="text-accent font-semibold">2014 - 2020</p>
+                        <h3 class="text-3xl font-bold text-main mt-2">TutorABC</h3>
+                        <p class="text-lg text-subtle">資深研發經理</p>
+                    </div>
+                    <div class="md:col-span-3 leading-relaxed">
+                        帶領團隊打造多項「一鍵式」數位化解決方案。其中，「一鍵寄送」專案透過整合金流與倉儲，每年為公司節省了超過一億元的行政成本，成為業界的創新標竿。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expertise Section -->
+        <section class="content-section">
+            <h2 class="section-title mb-12 text-center">核心專長</h2>
+            <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center">
+                <div class="space-y-2">
+                    <i class="fas fa-sitemap text-4xl icon-color"></i>
+                    <p class="font-semibold text-main">敏捷開發 (SCRUM)</p>
+                </div>
+                <div class="space-y-2">
+                    <i class="fas fa-users text-4xl icon-color"></i>
+                    <p class="font-semibold text-main">技術團隊建置</p>
+                </div>
+                <div class="space-y-2">
+                    <i class="fas fa-lightbulb text-4xl icon-color"></i>
+                    <p class="font-semibold text-main">企業數位轉型</p>
+                </div>
+                <div class="space-y-2">
+                    <i class="fas fa-brain text-4xl icon-color"></i>
+                    <p class="font-semibold text-main">AI系統整合</p>
+                </div>
+                <div class="space-y-2">
+                    <i class="fas fa-cloud text-4xl icon-color"></i>
+                    <p class="font-semibold text-main">雲端解決方案</p>
+                </div>
+                <div class="space-y-2">
+                    <i class="fas fa-cogs text-4xl icon-color"></i>
+                    <p class="font-semibold text-main">SRE</p>
+                </div>
+                <div class="space-y-2">
+                    <i class="fas fa-project-diagram text-4xl icon-color"></i>
+                    <p class="font-semibold text-main">專案管理 (PMP)</p>
+                </div>
+                <div class="space-y-2">
+                    <i class="fas fa-robot text-4xl icon-color"></i>
+                    <p class="font-semibold text-main">RPA</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Articles Section -->
+        <section class="content-section py-16">
+            <h2 class="section-title mb-12 text-center">精選洞察</h2>
+            <div class="marquee">
+                <div class="marquee-inner">
+                    <!-- Slide 1 -->
+                    <div class="marquee-item">
+                        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7205025752990326784/" target="_blank" rel="noopener noreferrer" class="article-card block rounded-lg overflow-hidden w-[450px]">
+                            <div class="relative pt-[75%]">
+                                <img class="absolute top-0 left-0 w-full h-full object-cover" src="https://raw.githubusercontent.com/robinaudi/ai-resume-pilot/main/linkedin_article_21162.jpeg" alt="AI Logo Design">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 p-5 text-white">
+                                    <p class="text-xs text-indigo-300 font-semibold">產業洞察 | AI 應用</p>
+                                    <h3 class="font-bold text-xl mt-1">AI 賦能品牌設計</h3>
+                                </div>
+                            </div>
+                            <div class="article-metrics p-4 flex-grow">
+                                <div class="flex items-center text-sm text-subtle space-x-4">
+                                    <span><i class="fas fa-eye mr-1"></i> ~1.8k 瀏覽</span>
+                                    <span><i class="fas fa-thumbs-up mr-1"></i> 98 讚</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="marquee-item">
+                        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7184354551397847040/" target="_blank" rel="noopener noreferrer" class="article-card block rounded-lg overflow-hidden w-[450px]">
+                             <div class="relative pt-[75%]">
+                                <img class="absolute top-0 left-0 w-full h-full object-cover" src="https://raw.githubusercontent.com/robinaudi/ai-resume-pilot/main/linkedin_article19365.jpeg" alt="AI Personal Website">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 p-5 text-white">
+                                    <p class="text-xs text-indigo-300 font-semibold">技術實踐 | AI 開發</p>
+                                    <h3 class="font-bold text-xl mt-1">AI 協作：我的個人網站建置實錄</h3>
+                                </div>
+                            </div>
+                            <div class="article-metrics p-4 flex-grow">
+                                <div class="flex items-center text-sm text-subtle space-x-4">
+                                    <span><i class="fas fa-eye mr-1"></i> ~2.5k 瀏覽</span>
+                                    <span><i class="fas fa-thumbs-up mr-1"></i> 150 讚</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="marquee-item">
+                        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7183351028535246848/" target="_blank" rel="noopener noreferrer" class="article-card block rounded-lg overflow-hidden w-[450px]">
+                             <div class="relative pt-[75%]">
+                                <img class="absolute top-0 left-0 w-full h-full object-cover" src="https://placehold.co/800x600/1f2937/d1d5db?text=AI+PC" alt="AI PC Market Trends">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 p-5 text-white">
+                                    <p class="text-xs text-indigo-300 font-semibold">市場趨勢 | 技術分析</p>
+                                    <h3 class="font-bold text-xl mt-1">AI PC 時代來臨：市場趨勢與技術解析</h3>
+                                </div>
+                            </div>
+                            <div class="article-metrics p-4 flex-grow">
+                                <div class="flex items-center text-sm text-subtle space-x-4">
+                                   <span><i class="fas fa-eye mr-1"></i> ~2.1k 瀏覽</span>
+                                   <span><i class="fas fa-thumbs-up mr-1"></i> 120 讚</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Slide 4 -->
+                    <div class="marquee-item">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="article-card block rounded-lg overflow-hidden w-[450px]">
+                             <div class="relative pt-[75%]">
+                                <img class="absolute top-0 left-0 w-full h-full object-cover" src="https://placehold.co/800x600/f3e8ff/6b21a8?text=PMP" alt="Project Management">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 p-5 text-white">
+                                    <p class="text-xs text-indigo-300 font-semibold">管理思維 | 團隊協作</p>
+                                    <h3 class="font-bold text-xl mt-1">PMP 只是開始：專案管理的實戰心法</h3>
+                                </div>
+                            </div>
+                            <div class="article-metrics p-4 flex-grow">
+                                <div class="flex items-center text-sm text-subtle space-x-4">
+                                   <span><i class="fas fa-eye mr-1"></i> 待發佈</span>
+                                   <span><i class="fas fa-thumbs-up mr-1"></i> 0 讚</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- Duplicate slides for seamless loop -->
+                    <div class="marquee-item">
+                        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7205025752990326784/" target="_blank" rel="noopener noreferrer" class="article-card block rounded-lg overflow-hidden w-[450px]">
+                            <div class="relative pt-[75%]">
+                                <img class="absolute top-0 left-0 w-full h-full object-cover" src="https://raw.githubusercontent.com/robinaudi/ai-resume-pilot/main/linkedin_article_21162.jpeg" alt="AI Logo Design">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 p-5 text-white">
+                                    <p class="text-xs text-indigo-300 font-semibold">產業洞察 | AI 應用</p>
+                                    <h3 class="font-bold text-xl mt-1">AI 賦能品牌設計</h3>
+                                </div>
+                            </div>
+                            <div class="article-metrics p-4 flex-grow">
+                                <div class="flex items-center text-sm text-subtle space-x-4">
+                                    <span><i class="fas fa-eye mr-1"></i> ~1.8k 瀏覽</span>
+                                    <span><i class="fas fa-thumbs-up mr-1"></i> 98 讚</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="marquee-item">
+                        <a href="https://www.linkedin.com/feed/update/urn:li:activity:7184354551397847040/" target="_blank" rel="noopener noreferrer" class="article-card block rounded-lg overflow-hidden w-[450px]">
+                             <div class="relative pt-[75%]">
+                                <img class="absolute top-0 left-0 w-full h-full object-cover" src="https://raw.githubusercontent.com/robinaudi/ai-resume-pilot/main/linkedin_article19365.jpeg" alt="AI Personal Website">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 p-5 text-white">
+                                    <p class="text-xs text-indigo-300 font-semibold">技術實踐 | AI 開發</p>
+                                    <h3 class="font-bold text-xl mt-1">AI 協作：我的個人網站建置實錄</h3>
+                                </div>
+                            </div>
+                            <div class="article-metrics p-4 flex-grow">
+                                <div class="flex items-center text-sm text-subtle space-x-4">
+                                    <span><i class="fas fa-eye mr-1"></i> ~2.5k 瀏覽</span>
+                                    <span><i class="fas fa-thumbs-up mr-1"></i> 150 讚</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sections = document.querySelectorAll('.content-section');
+            const header = document.getElementById('fixed-header');
+            const themeToggle = document.getElementById('theme-checkbox');
+
+            // --- Theme Logic ---
+            const applyTheme = (theme) => {
+                if (theme === 'light') {
+                    document.body.classList.add('light');
+                    document.body.classList.remove('dark');
+                    themeToggle.checked = true;
+                } else {
+                    document.body.classList.add('dark');
+                    document.body.classList.remove('light');
+                    themeToggle.checked = false;
+                }
+            };
+
+            const autoDetectTheme = () => {
+                // Timezone is set to Asia/Taipei (UTC+8)
+                const taipeiTime = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Taipei"}));
+                const currentHour = taipeiTime.getHours();
+                
+                // Daylight from 6 AM to 6 PM (18:00) Taipei time
+                if (currentHour >= 6 && currentHour < 18) {
+                    applyTheme('light');
+                } else {
+                    applyTheme('dark');
+                }
+            };
+            
+            // Apply theme on initial load
+            autoDetectTheme();
+
+            // Handle manual toggle
+            themeToggle.addEventListener('change', () => {
+                if (themeToggle.checked) {
+                    applyTheme('light');
+                } else {
+                    applyTheme('dark');
+                }
+            });
+
+            // --- Scroll Animation Logic ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // --- Header Background Logic ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.style.backgroundColor = document.body.classList.contains('dark') 
+                        ? 'rgba(17, 24, 39, 0.8)' 
+                        : 'rgba(255, 255, 255, 0.8)';
+                    header.style.backdropFilter = 'blur(10px)';
+                } else {
+                    header.style.backgroundColor = 'transparent';
+                    header.style.backdropFilter = 'none';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
